@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutterappxiecheng/dao/home_dao.dart';
 import 'package:flutterappxiecheng/model/common_model.dart';
-import 'package:flutterappxiecheng/widgets/locan_nav.dart';
+import 'package:flutterappxiecheng/model/grid_nav_model.dart';
+import 'package:flutterappxiecheng/widgets/grid_nav.dart';
+import 'package:flutterappxiecheng/widgets/local_nav.dart';
+import 'package:flutterappxiecheng/widgets/sub_nav.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,6 +22,10 @@ class _HomePageState extends State<HomePage> {
     'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600941041558&di=b6a515b0b2940d420db2f1a9d55f0875&imgtype=0&src=http%3A%2F%2Fa0.att.hudong.com%2F56%2F12%2F01300000164151121576126282411.jpg',
     'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600941041558&di=d530d565d39448981fb12b70d422b8ba&imgtype=0&src=http%3A%2F%2Fa4.att.hudong.com%2F22%2F59%2F19300001325156131228593878903.jpg'
   ];
+  List<CommonModel> localNavlist = [];
+  List<CommonModel> subNavlist = [];
+  GridNavModel gridNav;
+
   @override
   void initState() {
     //
@@ -30,6 +37,10 @@ class _HomePageState extends State<HomePage> {
 
   var appBarAlpha = 0.0;
   String resultString = '';
+
+  /**
+   * listview滑动时
+   */
   void _onScroll(double pixels) {
     appBarAlpha = pixels / MAX_OFFSET;
     if (appBarAlpha < 0) {
@@ -40,24 +51,23 @@ class _HomePageState extends State<HomePage> {
     print(appBarAlpha);
     setState(() {});
   }
-  List<CommonModel> localNavlist = [];
 
-  loadData(){
+  loadData() {
     HomeDao.fetch().then((homeModel) {
 //      print(value);
       setState(() {
         localNavlist = homeModel.localNavList;
+        gridNav = homeModel.gridNav;
+        subNavlist = homeModel.subNavList;
         resultString = json.encode(homeModel);
       });
-    })
-        .catchError((e){
+    }).catchError((e) {
       setState(() {
         resultString = e.toString();
       });
-    }
-    )
-    ;
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,12 +104,20 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(7, 4, 7, 4),
-                      child:  LocalNav(localNavlist),
+                      child: LocalNav(localNavlist),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+                      child: GridNav(model: gridNav),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+                      child: SubNav(subNavlist: subNavlist),
                     ),
                     Container(
                       height: 800,
                       child: ListTile(
-                        title: Text(resultString),
+                        title: Text('resultString'),
                       ),
                     ),
                   ],

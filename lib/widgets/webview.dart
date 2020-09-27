@@ -110,17 +110,36 @@ class _WebViewState extends State<WebView> {
     if(widget.hideAppBar ?? false){
       return Container(
         color: background,
-        height: 30,
+        height: 25,
       );
     }
     return Container(
+      padding: EdgeInsets.fromLTRB(0, 40, 0, 8),
       child: FractionallySizedBox(
         widthFactor: 1, //宽度撑满
         child: Stack(
           children: <Widget>[
             GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
               child: Container(
-
+                margin: EdgeInsets.only(left: 10),
+                child: Icon(
+                  Icons.close,
+                  color: backButton,
+                  size: 26,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Text(
+                  widget.title ?? '',
+                  style: TextStyle(color: backButton, fontSize: 20),
+                ),
               ),
             )
           ],
