@@ -19,7 +19,7 @@ class HomeDao{
     Response response = await Dio().get(HOME_URL);
 
     if(response.statusCode == 200){
-      print("响应数据${response.data}");
+//      print("响应数据${response.data}");
       return HomeModel.fromJson(response.data);
     }else{
       print("响应数据failed");
