@@ -110,7 +110,7 @@ class _WebViewState extends State<WebView> {
     if(widget.hideAppBar ?? false){
       return Container(
         color: background,
-        height: 25,
+        height: 20,
       );
     }
     return Container(
